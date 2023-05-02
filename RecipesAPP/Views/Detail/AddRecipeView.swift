@@ -17,6 +17,7 @@ struct AddRecipeView: View {
     @State private var description: String = ""
     @State private var ingredients: String = ""
     @State private var directions: String = ""
+    @State private var imageURL: String = ""
     @State private var navigateToRecipe = false
 
     // swift provides a handler to dismiss actions
@@ -52,6 +53,9 @@ struct AddRecipeView: View {
                 Section(header: Text("Directions")) {
                     TextEditor(text: $directions)
                 }
+                Section(header: Text("Directions")) {
+                    TextField("Image URL", text: $imageURL)
+                }
             }
             .toolbar(content: {
                 // container for cancel button
@@ -71,6 +75,7 @@ struct AddRecipeView: View {
                             .navigationBarBackButtonHidden(true)
                     } label: {
                         Button {
+                            saveRecipe()
                             navigateToRecipe = true
                         } label: {
                             Label("Done", systemImage: "checkmark")
@@ -95,5 +100,19 @@ struct AddRecipeView_Previews: PreviewProvider {
     static var previews: some View {
         AddRecipeView()
             .environmentObject(RecipesViewModel())
+    }
+}
+
+extension AddRecipeView {
+    private func saveRecipe() {
+        let now = Date()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm-dd-yyyy"
+        let datePublished = dateFormatter.string(from: now)
+        print(datePublished)
+        let recipe = Recipe(name: name, image: imageURL, description: description, ingredients: ingredients, directions: directions, category: selectedCategory.rawValue, datePublished: datePublished, url: "")
+        
+        recipesVM.addRecipe(recipe: recipe)
     }
 }

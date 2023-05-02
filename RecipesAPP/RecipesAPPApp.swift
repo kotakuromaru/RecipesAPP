@@ -10,11 +10,11 @@ import SwiftUI
 @main
 struct RecipesAPPApp: App {
     // @StateObject indicates that it'll follow the life cycle of the app
-    @StateObject var recipesViewModel = RecipesViewModel()
+    @StateObject var recipesVM = RecipesViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(recipesViewModel)
+                .environmentObject(RecipesViewModel())
         }
     }
 }
